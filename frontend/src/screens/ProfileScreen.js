@@ -6,7 +6,9 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 
 // action
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
+
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
 
 
 const ProfileScreen = () => {
@@ -29,20 +31,24 @@ const ProfileScreen = () => {
   const userLogin = useSelector(state => state.userLogin)
   const { userInfo } = userLogin
 
+  const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+  const { success } = userUpdateProfile
+
 
   useEffect(() => {
     if (!userInfo) {
       navigate('/login')
     } else {
       // check for user
-      if (!user.name) {
+      if (!user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET })
         dispatch(getUserDetails('profile'))
       } else {
         setName(user.name)
         setEmail(user.email)
       }
     }
-  }, [userInfo, navigate, dispatch, user])
+  }, [userInfo, navigate, dispatch, user, success])
 
 
 
@@ -53,6 +59,12 @@ const ProfileScreen = () => {
       setMessage('Passwords do not match')
     } else {
       // Dispatch update profile
+      dispatch(updateUserProfile({
+        id: user._id,
+        name,
+        email,
+        password
+      }))
     }
   }
 
@@ -66,6 +78,8 @@ const ProfileScreen = () => {
         {message && (<Message variant='danger'>{message}</Message>)}
 
         {error && (<Message variant='danger'>{error}</Message>)}
+
+        {success && (<Message variant='success'>Profile Updated</Message>)}
 
         {loading && (<Loader />)}
 
