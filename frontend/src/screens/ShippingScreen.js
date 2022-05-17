@@ -30,6 +30,8 @@ const ShippingScreen = () => {
     navigate('/payment')
   }
 
+
+
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 />
