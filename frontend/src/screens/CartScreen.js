@@ -5,7 +5,7 @@ import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import Message from '../components/Message';
 
 // actions
-import { addToCart } from '../actions/cartActions';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 
 
 
@@ -39,8 +39,8 @@ const CartScreen = () => {
 
 
 
-  const removeFromCartHandler = () => {
-
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
   }
 
 
