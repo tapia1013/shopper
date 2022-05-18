@@ -6,6 +6,7 @@ import Order from '../models/orderModel.js';
 // @route    POST /api/orders
 // @access   Private
 const addOrderItems = asyncHandler(async (req, res) => {
+  // bring the data from the front end/req.body
   const {
     orderItems,
     shippingAddress,
@@ -14,18 +15,18 @@ const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice
-  } = req.body;
+  } = req.body
 
-
+  // check to see if order if no orders throw error, else create new order
   if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error('No Order Items');
-    return;
+    res.status(400)
+    throw new Error('No order items')
+    return
   } else {
-    // create new order
+    // if there is an order create new order
     const order = new Order({
       orderItems,
-      user: req.user_id,
+      user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
@@ -33,15 +34,14 @@ const addOrderItems = asyncHandler(async (req, res) => {
       shippingPrice,
       totalPrice
     })
-    // save to DB
-    const createdOrder = await Order.save();
 
-    // return the data we saved and created
-    res.status(201).json(createdOrder);
+    // save to db
+    const createdOrder = await order.save()
+
+    // response with 201 = created, and repond with info
+    res.status(201).json(createdOrder)
   }
-
 })
 
-export {
-  addOrderItems
-}
+
+export { addOrderItems }
