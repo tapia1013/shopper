@@ -13,6 +13,7 @@ import { createOrder } from '../actions/orderActions';
 
 const PlaceOrderScreen = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const cart = useSelector(state => state.cart)
 
@@ -35,7 +36,7 @@ const PlaceOrderScreen = () => {
   const orderCreate = useSelector(state => state.orderCreate)
   const { order, success, error } = orderCreate
 
-  const navigate = useNavigate()
+
 
   useEffect(() => {
     if (success) {
